@@ -1,0 +1,20 @@
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "F",     # unused variables , imports  , undefined names
+    "B",     # legal python code but may cause 
+    "UP",    # for modern syntax in python
+    "ARG",   # unused but declared arg
+    "C90",   # complexity violations
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10 # maximal branching (this is not an error itself)
+
+####################################################################
+
+[tool.mypy]
+strict = allow
+

@@ -27,10 +27,9 @@ The pipeline is composed of the following phases.
 
 **What it examines:**
 
-- Syntax correctness and PEP 8 compliance (`ruff`, `flake8`)
+- Syntax correctness and PEP 8 compliance (`ruff`)
 - Type annotation consistency and type-safety violations (`mypy`)
 - Declared-but-never-used symbols: imports, variables, functions
-- Cyclomatic complexity scores per function (`radon`)
 
 **Input:** Raw `.py` source files.
 
@@ -194,3 +193,6 @@ This table is the authoritative anti-redundancy contract. Every topic that could
 | **Exceptions** | P3 & P4b | **P3** = caught at right level / context preserved (correctness). **P4b** = stack traces / PII leaking to client (information leakage). |
 | **Heavy query / full-table-scan** | P4b & P5 | **P5** = degradation under *normal expected* load. **P4b** = *deliberate* DoS via attacker-controlled input. |
 | **Coverage vs. test value** | P6 (internal) | **Machine** = coverage percentage. **AI** = meaningfulness of tests. Disjoint. |
+
+
+- multi threading is to be used at each stage 
