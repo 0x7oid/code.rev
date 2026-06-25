@@ -1,77 +1,151 @@
+import os
+import re
 import json
 import subprocess
+from collections import defaultdict
 
-# ok this function will be used to call a cmd command and return the output, error and return code
+# enable ANSI colors in Windows 10+ terminals
+os.system("")
+
+
+# ---------- shell ----------
 def run_tool(cmd):
+    """Run a command and capture stdout, stderr and the return code."""
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     return {
         "output_wrapper": result.stdout,
         "error_wrapper": result.stderr,
-        "return_code": result.returncode
+        "return_code": result.returncode,
     }
 
+
 def run_static_analyzer():
-    ruff_result = run_tool("ruff . --output-format json")
-    mypy_result = run_tool("mypy . ")
+    ruff_result = run_tool("ruff check . --output-format json")
+    mypy_result = run_tool("mypy .")
     return ruff_result, mypy_result
 
+
+# ---------- parsers ----------
 def parse_ruff(ruff_output):
     try:
         ruff_json = json.loads(ruff_output)
-        return ruff_json
-    except:
+    except (json.JSONDecodeError, TypeError):
         return []
-    
+
     results = []
     for item in ruff_json:
+        loc = item.get("location", {}) or {}
         results.append({
-            "file" : item.get("filename"),
-            "line": item.get("location", {}).get("row"),
+            "tool": "ruff",
+            "file": item.get("filename"),
+            "line": loc.get("row"),
+            "column": loc.get("column"),
             "code": item.get("code"),
-            "message": item.get("message")
+            "severity": "",            # ruff doesn't report a severity
+            "message": item.get("message"),
         })
     return results
+
+
+# file:line: sev: msg   AND   file:line:col: sev: msg   (+ optional trailing [code])
+# non-greedy file group backtracks correctly over Windows paths (C:\...:10: ...)
+_MYPY_LINE = re.compile(
+    r"^(?P<file>.+?):(?P<line>\d+):(?:(?P<col>\d+):)?\s*"
+    r"(?P<sev>\w+):\s*(?P<msg>.*?)(?:\s+\[(?P<code>[\w-]+)\])?$"
+)
+
+
 def parse_mypy(mypy_output):
     results = []
     for line in mypy_output.splitlines():
-        if ":" in line:
-            parts = line.split(":", 3)
-            if len(parts) >= 4:
-                file_path = parts[0].strip()
-                line_number = parts[1].strip()
-                column_number = parts[2].strip()
-                message = parts[3].strip()
-                results.append({
-                    "file": file_path,
-                    "line": line_number,
-                    "column": column_number,
-                    "message": message
-                })
+        m = _MYPY_LINE.match(line)
+        if not m:
+            continue  # skip summary lines like "Found 13 errors in 1 file"
+        results.append({
+            "tool": "mypy",
+            "file": m.group("file").strip(),
+            "line": m.group("line"),
+            "column": m.group("col"),
+            "code": m.group("code") or "",
+            "severity": m.group("sev"),
+            "message": m.group("msg").strip(),
+        })
     return results
+
 
 def normalize(ruff_result, mypy_result):
     all_items = []
-
-    all_items.extend(parse_ruff(ruff_result["stdout"]))
-    all_items.extend(parse_mypy(mypy_result["stdout"]))
-
+    all_items.extend(parse_ruff(ruff_result["output_wrapper"]))
+    all_items.extend(parse_mypy(mypy_result["output_wrapper"]))
     return all_items
 
-from collections import defaultdict
+
+# ---------- pretty printer ----------
+ACCENT = "\033[36m"   # single accent color (cyan) for structure
+BOLD = "\033[1m"
+RESET = "\033[0m"
+
+
+def color(text, *codes):
+    if os.environ.get("NO_COLOR") is not None:
+        return text
+    return "".join(codes) + text + RESET
+
+
+def _int(v):
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _short(path):
+    try:
+        return os.path.relpath(path)
+    except Exception:
+        return path or "?"
+
+
 def print_cli(items):
-    grouped = defaultdict(list)
+    if not items:
+        print(color("\n  No issues found\n", ACCENT, BOLD))
+        return
 
-    for item in items:
-        grouped[item["tool"]].append(item)
+    by_tool = defaultdict(list)
+    for it in items:
+        by_tool[it["tool"]].append(it)
 
-    for tool, entries in grouped.items():
-        print("\n" + "=" * 50)
-        print(tool.upper())
-        print("=" * 50)
+    # ---- header ----
+    parts = "   ".join(f"{t}={len(v)}" for t, v in sorted(by_tool.items()))
+    print()
+    print(color("=" * 64, ACCENT))
+    print(color("  STATIC ANALYSIS REPORT", ACCENT, BOLD))
+    print(f"  {len(items)} issues   ({parts})")
+    print(color("=" * 64, ACCENT))
 
+    for tool in sorted(by_tool):
+        entries = by_tool[tool]
+        print()
+        print(color(f"  {tool.upper()}  ({len(entries)})", ACCENT, BOLD))
+        print(color("-" * 64, ACCENT))
+
+        by_file = defaultdict(list)
         for e in entries:
-            file = e.get("file", "?")
-            line = e.get("line", "?")
-            msg = e.get("message", "")
+            by_file[e.get("file") or "?"].append(e)
 
-            print(f"{file}:{line} → {msg}")
+        for f in sorted(by_file):
+            print(color(f"  {_short(f)}", BOLD))
+            for e in sorted(by_file[f], key=lambda x: _int(x.get("line"))):
+                line = str(e.get("line", "?"))
+                col = e.get("column")
+                loc = f"{line}:{col}" if col else line
+                sev = (e.get("severity") or "").lower()
+                code = e.get("code") or ""
+                print(f"    {loc.rjust(8)}  {sev.ljust(7)} {code.ljust(14)} {e.get('message', '')}")
+        print()
+
+
+if __name__ == "__main__":
+    ruff_result, mypy_result = run_static_analyzer()
+    items = normalize(ruff_result, mypy_result)
+    print_cli(items)

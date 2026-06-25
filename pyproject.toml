@@ -16,5 +16,5 @@ max-complexity = 10 # maximal branching (this is not an error itself)
 ####################################################################
 
 [tool.mypy]
-strict = allow
+strict = true
 
