@@ -1,1 +1,2 @@
 - Not all critereas are of the same priority , add judgement for each point of the report [critical , not critical ...]
+- async between tools of same stage
