@@ -1,7 +1,7 @@
 from google import genai
 import os
 
-client = genai.client(api_key=os.environ.get("API_KEY"))
+client = genai.Client(api_key=os.environ.get("API_KEY"))
 
 
 def ask_llm(prompt , model="gemini-3.5-flash"):
