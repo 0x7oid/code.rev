@@ -1,14 +1,4 @@
-"""
-  gather directory tree and all .py files (and the list of function units to cover).
-  secondly load the logic_prompt.md framework and attach the gathered code.
-  thirdly send it to the model via ask_llm().
-  fourthly repair + check the JSON the model returns (post-processing script is to be implemented in llm folder since it will be used by all ai reviewers).
-  finally write the validated result to disk.
-
-    usage : python -m ai_reviewers.logic_analyzer  path/to/project_to_review
-"""
-
-import sys
+# gather code + units, ask LLM with logic prompt, parse JSON — orchestrator passes project_path
 import ast
 import json
 from pathlib import Path
@@ -19,8 +9,7 @@ IGNORE_DIRS = {".git", "__pycache__", "venv", ".venv", "env",
                "node_modules", "build", "dist"}
 
 
-def list_units(code, rel):
-    """Return 'rel::function' for every function/method defined in code."""
+def list_units(code: str, rel: str):
     try:
         tree = ast.parse(code)
     except SyntaxError:
@@ -29,8 +18,7 @@ def list_units(code, rel):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))]
 
 
-def gather_codebase(project_path):
-    """Return (bundle_text, unit_list) for every .py file under project_path."""
+def gather_codebase(project_path: str):
     root = Path(project_path).resolve()
     files = [p for p in sorted(root.rglob("*.py"))
              if not any(part in IGNORE_DIRS for part in p.parts)]
@@ -45,9 +33,8 @@ def gather_codebase(project_path):
     return "\n\n".join(chunks), unit_list
 
 
-def build_prompt(bundle_text, unit_list):
-    """Concatenate the framework, the unit list, and the gathered code."""
-    framework = (Path(__file__).resolve().parent / "logic_prompt.md").read_text(encoding="utf-8")
+def build_prompt(bundle_text: str, unit_list: list[str]):
+    framework = (Path(__file__).resolve().parent / "logic_correctness_prompt.md").read_text(encoding="utf-8")
     listing = "\n".join("- " + u for u in unit_list)
     return (
         f"{framework}\n\n---\n# CODEBASE UNDER REVIEW\n"
@@ -57,29 +44,17 @@ def build_prompt(bundle_text, unit_list):
     )
 
 
-def parse_reply(raw):
-    """Slice the model's reply to its outermost JSON object and parse it."""
+def parse_logic_output(raw: str):
     start, end = raw.find("{"), raw.rfind("}")
-    return json.loads(raw[start:end + 1])
-
-
-def analyze_logic(project_path, model="gemini-3.5-flash", out_path="logic_review.json"):
-    bundle_text, unit_list = gather_codebase(project_path)
-    print(f"gathered {len(unit_list)} units")
-
-    raw = ask_llm(build_prompt(bundle_text, unit_list), model=model)
-
     try:
-        doc = parse_reply(raw)
-    except (json.JSONDecodeError, ValueError) as e:
-        Path("logic_review_RAW.txt").write_text(raw, encoding="utf-8")
-        print("could not parse JSON:", e, "-> saved raw reply to logic_review_RAW.txt")
-        return None
-
-    Path(out_path).write_text(json.dumps(doc, indent=2), encoding="utf-8")
-    print("saved review to", out_path)
-    return doc
+        return json.loads(raw[start:end + 1])
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Failed to parse LLM output: {e}")
 
 
-if __name__ == "__main__":
-    analyze_logic(sys.argv[1] if len(sys.argv) > 1 else ".")
+def logic_analysis(project_path: str, model: str = "gemini-3.5-flash"):
+    bundle_text, unit_list = gather_codebase(project_path)
+    raw = ask_llm(build_prompt(bundle_text, unit_list), model=model)
+    return parse_logic_output(raw)
+
+# =====================================================================

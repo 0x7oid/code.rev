@@ -1,14 +1,4 @@
-"""
-  gather directory tree and all .py files.
-  secondly load the structure_prompt.md framework and attach the gathered code.
-  thirdly send it to the model via ask_llm().
-  fourthly repair + check the JSON the model returns (post-processing script is to be implemented in llm folder since it will be used by all ai reviewrs).
-  finally write the validated result to disk. 
-
-    usage : python -m ai_reviewers.structure_analyzer  path/to/project_to_review
-"""
-
-import sys
+# gather code + modules, ask LLM with structure prompt, parse JSON — orchestrator passes project_path
 import json
 from pathlib import Path
 
@@ -18,8 +8,7 @@ IGNORE_DIRS = {".git", "__pycache__", "venv", ".venv", "env",
                "node_modules", "build", "dist"}
 
 
-def gather_codebase(project_path):
-    """Return (bundle_text, module_list) for every .py file under project_path."""
+def gather_codebase(project_path: str):
     root = Path(project_path).resolve()
     files = [p for p in sorted(root.rglob("*.py"))
              if not any(part in IGNORE_DIRS for part in p.parts)]
@@ -33,8 +22,7 @@ def gather_codebase(project_path):
     return "\n\n".join(chunks), module_list
 
 
-def build_prompt(bundle_text, module_list):
-    """Concatenate the framework, the module list, and the gathered code."""
+def build_prompt(bundle_text: str, module_list: list[str]):
     framework = (Path(__file__).resolve().parent / "structure_prompt.md").read_text(encoding="utf-8")
     listing = "\n".join("- " + m for m in module_list)
     return (
@@ -44,29 +32,17 @@ def build_prompt(bundle_text, module_list):
     )
 
 
-def parse_reply(raw):
-    """Slice the model's reply to its outermost JSON object and parse it."""
+def parse_structure_output(raw: str):
     start, end = raw.find("{"), raw.rfind("}")
-    return json.loads(raw[start:end + 1])
-
-
-def analyze_structure(project_path, model="gemini-3.5-flash", out_path="structure_review.json"):
-    bundle_text, module_list = gather_codebase(project_path)
-    print(f"gathered {len(module_list)} modules")
-
-    raw = ask_llm(build_prompt(bundle_text, module_list), model=model)
-
     try:
-        doc = parse_reply(raw)
-    except (json.JSONDecodeError, ValueError) as e:
-        Path("structure_review_RAW.txt").write_text(raw, encoding="utf-8")
-        print("could not parse JSON:", e, "-> saved raw reply to structure_review_RAW.txt")
-        return None
-
-    Path(out_path).write_text(json.dumps(doc, indent=2), encoding="utf-8")
-    print("saved review to", out_path)
-    return doc
+        return json.loads(raw[start:end + 1])
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Failed to parse LLM output: {e}")
 
 
-if __name__ == "__main__":
-    analyze_structure(sys.argv[1] if len(sys.argv) > 1 else ".")
+def structure_analysis(project_path: str, model: str = "gemini-3.5-flash"):
+    bundle_text, module_list = gather_codebase(project_path)
+    raw = ask_llm(build_prompt(bundle_text, module_list), model=model)
+    return parse_structure_output(raw)
+
+# =====================================================================
