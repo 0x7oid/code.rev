@@ -205,3 +205,5 @@ Reviews:
   * Running the 4 stages of the pipeline asynchronously
   * Solving the LLM-Json problem
   * Adding more stages to the pipeline , such as : Performance-Evaluation stage , to reduce time complexity and to detect known software bad codes.
+  * Turning the project into a web-app with a dashboard.
+  * Reduce token usage.
