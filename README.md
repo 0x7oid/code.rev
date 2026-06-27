@@ -12,6 +12,7 @@ Phases:
 * Structure
 
 Each phase targets a distinct aspect of code quality.
+PS : The output can be found in test > review_output
 
 ---
 
