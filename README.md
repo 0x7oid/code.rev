@@ -1,6 +1,6 @@
 # Code.Rev
 
-code.rev is an AI-assisted code review tool for Python projects. It runs four
+code.rev is CLI - AI-assisted code review tool for Python projects. It runs four
 review phases over a target codebase, combining deterministic analysis
 tools with LLM-based review. Each phase generates a separate JSON report.
 
