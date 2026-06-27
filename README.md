@@ -84,7 +84,7 @@ orchestrator.run_review(project_path, model)
    └─ structure_analysis(path, model)                          → structure_review.json
 
 
-
+---
 # Phase 1 — Static Analysis
 
 Runs **Ruff** (`ruff check`) and **Mypy** (`mypy`, default configuration).
