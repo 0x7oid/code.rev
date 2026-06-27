@@ -1,0 +1,2857 @@
+{
+  "phase": "3-logic",
+  "language": "python",
+  "summary": {
+    "functions_reviewed": 17,
+    "reconstructed_intent": "The codebase implements a web service with various utility and business logic functions. Intent was reconstructed from function names, signatures, and surrounding code as no explicit requirements were provided. The service includes functionality for command execution, expression evaluation, object deserialization, configuration loading, user retrieval, and checkout processing, alongside calculation and utility helpers.",
+    "logic_health": "fragile",
+    "headline": "The codebase exhibits numerous critical and high-severity logic defects, primarily related to unhandled edge cases, incorrect boundary conditions, mutable default arguments, and fundamental calculation errors, leading to crashes or silently incorrect results. Several functions violate their implicit contracts or type annotations."
+  },
+  "coverage": {
+    "units": [
+      "app.py::calc",
+      "app.py::checkout",
+      "app.py::load_config",
+      "app.py::load_obj",
+      "app.py::run_cmd",
+      "app.py::user",
+      "calculations.py::append_item",
+      "calculations.py::apply_discount",
+      "calculations.py::average",
+      "calculations.py::grade",
+      "calculations.py::is_adult",
+      "calculations.py::max_value",
+      "db.py::get_user",
+      "utils.py::add",
+      "utils.py::hash_password",
+      "utils.py::main_check",
+      "utils.py::parse_config"
+    ],
+    "matrix": [
+      {
+        "unit": "app.py::calc",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "finding:L-001",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "app.py::checkout",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "acceptable",
+          "state_mutation": "acceptable",
+          "contract_conformance": "finding:L-004"
+        },
+        "note": ""
+      },
+      {
+        "unit": "app.py::load_config",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "finding:L-003",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "app.py::load_obj",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "finding:L-002",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "app.py::run_cmd",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "acceptable",
+          "state_mutation": "acceptable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "app.py::user",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "acceptable",
+          "state_mutation": "acceptable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "calculations.py::append_item",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "not_applicable",
+          "state_mutation": "finding:L-011",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "calculations.py::apply_discount",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "not_applicable",
+          "state_mutation": "acceptable",
+          "contract_conformance": "finding:L-007"
+        },
+        "note": ""
+      },
+      {
+        "unit": "calculations.py::average",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "finding:L-005",
+          "exception_handling": "acceptable",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "finding:L-006"
+        },
+        "note": ""
+      },
+      {
+        "unit": "calculations.py::grade",
+        "verdicts": {
+          "control_flow": "finding:L-012",
+          "edge_cases": "acceptable",
+          "exception_handling": "not_applicable",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "calculations.py::is_adult",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "finding:L-010",
+          "exception_handling": "not_applicable",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "calculations.py::max_value",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "finding:L-008",
+          "exception_handling": "acceptable",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "db.py::get_user",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "acceptable",
+          "state_mutation": "acceptable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "utils.py::add",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "not_applicable",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "utils.py::hash_password",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "not_applicable",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      },
+      {
+        "unit": "utils.py::main_check",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "finding:L-015",
+          "exception_handling": "acceptable",
+          "state_mutation": "acceptable",
+          "contract_conformance": "finding:L-014"
+        },
+        "note": ""
+      },
+      {
+        "unit": "utils.py::parse_config",
+        "verdicts": {
+          "control_flow": "acceptable",
+          "edge_cases": "acceptable",
+          "exception_handling": "finding:L-013",
+          "state_mutation": "not_applicable",
+          "contract_conformance": "acceptable"
+        },
+        "note": ""
+      }
+    ]
+  },
+  "probe_ledger": [
+    {
+      "unit": "app.py::calc",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "Numeric zero input is handled correctly by eval."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "Unit evaluates expressions; numeric out-of-range is eval's domain."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "finding:L-001",
+          "reason": "Empty string `expr` causes SyntaxError from eval()."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "finding:L-001",
+          "reason": "Eval() exceptions are unhandled, crashing application."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function returns evaluation result; primary defect is error handling."
+        }
+      ]
+    },
+    {
+      "unit": "app.py::checkout",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "Zero inputs for price/percent handled by float conversion."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "Negative inputs handled by `if total < 0` clamp."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "clear",
+          "reason": "Float boundary comparison `total < 0` is robust."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "String inputs for price/percent handled by float conversion."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "clear",
+          "reason": "Boundary for negative total correctly handled by clamping."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "clear",
+          "reason": "Conditional for clamping total < 0 is complete."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "acceptable",
+          "reason": "os.system is a security concern, not a state_mutation correctness defect."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "finding:L-004",
+          "reason": "Return value is incorrect due to faulty `apply_discount` call."
+        }
+      ]
+    },
+    {
+      "unit": "app.py::load_config",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "Empty string `yaml` returns `null` JSON, which is acceptable."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "finding:L-003",
+          "reason": "YAML parsing exceptions are unhandled, crashing application."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function returns YAML object; primary defect is error handling."
+        }
+      ]
+    },
+    {
+      "unit": "app.py::load_obj",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "finding:L-002",
+          "reason": "Empty byte string `blob` causes UnpicklingError."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "finding:L-002",
+          "reason": "Pickle deserialization exceptions unhandled, crashing application."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function returns object; primary defect is error handling."
+        }
+      ]
+    },
+    {
+      "unit": "app.py::run_cmd",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "Empty command string handled gracefully by subprocess."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "acceptable",
+          "reason": "Subprocess errors are propagated, which is acceptable."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function returns stdout correctly for the given command."
+        }
+      ]
+    },
+    {
+      "unit": "app.py::user",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "Empty name for `get_user` is handled; no crash."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "acceptable",
+          "reason": "Database errors are propagated which is acceptable."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function delegates; primary defect is in get_user."
+        }
+      ]
+    },
+    {
+      "unit": "calculations.py::append_item",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit primarily adds item, not aggregates collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "clear",
+          "reason": "Handles single-element and duplicate items correctly."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs or operations."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs or operations."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "String inputs for item handled correctly."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "finding:L-011",
+          "reason": "Mutable default argument `bucket=[]` shared across calls."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "clear",
+          "reason": "In-place mutation of bucket is expected; defect is default mutable."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "clear",
+          "reason": "Aliasing is a consequence of P11; P11 is root cause here."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Returns the modified bucket, which conforms to explicit return."
+        }
+      ]
+    },
+    {
+      "unit": "calculations.py::apply_discount",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "Zero inputs for price/percent handled arithmetically."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "Negative inputs for price/percent handled arithmetically."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "finding:L-007",
+          "reason": "Calculation `price - percent` does not apply percentage discount."
+        }
+      ]
+    },
+    {
+      "unit": "calculations.py::average",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "finding:L-005",
+          "reason": "Empty list causes ZeroDivisionError."
+        },
+        {
+          "probe": "P02",
+          "verdict": "clear",
+          "reason": "Handles single-element and duplicate items correctly."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "List containing zero values handled correctly."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "List containing negative/out-of-range values handled correctly."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast; implicit float truncation not covered."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "finding:L-006",
+          "reason": "Float division with `-> int` annotation leads to implicit truncation."
+        }
+      ]
+    },
+    {
+      "unit": "calculations.py::grade",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "Score of zero is implicitly handled as no grade, but not crashing."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "Negative or out-of-range scores implicitly return None, not crashing."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "clear",
+          "reason": "Boundaries for scores are relative, not off-by-one errors."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "finding:L-012",
+          "reason": "Missing `else` for scores below 70, causing implicit `None` return."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Returns value based on logic; main defect is incomplete control flow."
+        }
+      ]
+    },
+    {
+      "unit": "calculations.py::is_adult",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "Age zero handled as not adult, which is correct."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "Negative age handled as not adult, which is correct."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "finding:L-010",
+          "reason": "Off-by-one: `age > 18` excludes 18-year-olds from being adult."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "clear",
+          "reason": "Conditional logic is exhaustive (simple boolean return)."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Returns boolean; defect is off-by-one, not type/shape."
+        }
+      ]
+    },
+    {
+      "unit": "calculations.py::max_value",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "finding:L-009",
+          "reason": "Empty list causes IndexError due to `values[0]`."
+        },
+        {
+          "probe": "P02",
+          "verdict": "clear",
+          "reason": "Single-element and duplicate items handled correctly."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "List containing zero handled correctly."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "List containing negative/out-of-range values handled correctly."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "finding:L-008",
+          "reason": "Off-by-one in loop range misses the last element."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "clear",
+          "reason": "Loop termination is guaranteed by `range`."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "acceptable",
+          "reason": "Errors are propagated; IndexError is handled by L-009 finding."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Returns numerical value; defect is off-by-one."
+        }
+      ]
+    },
+    {
+      "unit": "db.py::get_user",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections directly."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections directly."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "Empty string `name` handled by SQL query; returns empty list."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "acceptable",
+          "reason": "Database errors are propagated, which is acceptable."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function returns fetchall result, conforming to explicit return."
+        }
+      ]
+    },
+    {
+      "unit": "utils.py::add",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "clear",
+          "reason": "Adding zero is arithmetically correct."
+        },
+        {
+          "probe": "P04",
+          "verdict": "clear",
+          "reason": "Negative or large numbers are handled by Python's int type."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Returns the sum of two integers, as expected by annotation."
+        }
+      ]
+    },
+    {
+      "unit": "utils.py::hash_password",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "clear",
+          "reason": "Empty password string handled correctly by hashlib."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Returns MD5 hash as string, conforming to contract."
+        }
+      ]
+    },
+    {
+      "unit": "utils.py::main_check",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections directly."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections directly."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs directly used in unit logic."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs directly used in unit logic."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "not_applicable",
+          "reason": "No string inputs processed in primary logic."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "finding:L-015",
+          "reason": "Comparison `result == None` is not idiomatic; should be `is None`."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "clear",
+          "reason": "Conditional logic for `result == None` is exhaustive."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "clear",
+          "reason": "Exception handling for `add` call is external to this unit."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "finding:L-014",
+          "reason": "Calls `add` with incorrect argument types, violating its contract."
+        }
+      ]
+    },
+    {
+      "unit": "utils.py::parse_config",
+      "probes": [
+        {
+          "probe": "P01",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P02",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process collections."
+        },
+        {
+          "probe": "P03",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P04",
+          "verdict": "not_applicable",
+          "reason": "No numeric inputs."
+        },
+        {
+          "probe": "P05",
+          "verdict": "not_applicable",
+          "reason": "No explicit integer division or cast."
+        },
+        {
+          "probe": "P06",
+          "verdict": "not_applicable",
+          "reason": "No floating-point equality or boundary comparison."
+        },
+        {
+          "probe": "P07",
+          "verdict": "not_applicable",
+          "reason": "No magic constants or hardcoded domain assumptions."
+        },
+        {
+          "probe": "P08",
+          "verdict": "finding:L-013",
+          "reason": "Empty string `raw` causes JSONDecodeError from json.loads()."
+        },
+        {
+          "probe": "P09",
+          "verdict": "not_applicable",
+          "reason": "Unit does not process parallel collections."
+        },
+        {
+          "probe": "P10",
+          "verdict": "not_applicable",
+          "reason": "No ranges, slices, or boundary comparisons."
+        },
+        {
+          "probe": "P11",
+          "verdict": "not_applicable",
+          "reason": "No default mutable arguments used."
+        },
+        {
+          "probe": "P12",
+          "verdict": "not_applicable",
+          "reason": "No falsy-value trap detected."
+        },
+        {
+          "probe": "P13",
+          "verdict": "not_applicable",
+          "reason": "No explicit loops or recursive calls."
+        },
+        {
+          "probe": "P14",
+          "verdict": "not_applicable",
+          "reason": "No complex conditional logic with unreachable branches."
+        },
+        {
+          "probe": "P15",
+          "verdict": "not_applicable",
+          "reason": "No incomplete conditional logic paths."
+        },
+        {
+          "probe": "P16",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P17",
+          "verdict": "not_applicable",
+          "reason": "No explicit exception handlers."
+        },
+        {
+          "probe": "P18",
+          "verdict": "not_applicable",
+          "reason": "No explicit cleanup blocks like finally."
+        },
+        {
+          "probe": "P19",
+          "verdict": "finding:L-013",
+          "reason": "JSON parsing exceptions are unhandled, crashing application."
+        },
+        {
+          "probe": "P20",
+          "verdict": "not_applicable",
+          "reason": "No caller-owned arguments are mutated."
+        },
+        {
+          "probe": "P21",
+          "verdict": "not_applicable",
+          "reason": "No complex objects with nested mutables are copied."
+        },
+        {
+          "probe": "P22",
+          "verdict": "not_applicable",
+          "reason": "No mutable global or shared state is written."
+        },
+        {
+          "probe": "P23",
+          "verdict": "not_applicable",
+          "reason": "No object aliasing detected."
+        },
+        {
+          "probe": "P24",
+          "verdict": "clear",
+          "reason": "Function returns parsed JSON object; primary defect is error handling."
+        }
+      ]
+    }
+  ],
+  "systemic_findings": [
+    {
+      "id": "SYS-001",
+      "description": "A fundamental misunderstanding or incorrect implementation of a percentage discount calculation propagates an incorrect financial total through the application. The `apply_discount` function's logic is fundamentally flawed, causing the `checkout` process to report incorrect totals.",
+      "manifested_as": [
+        "L-007",
+        "L-004"
+      ],
+      "resolution": "Correct the `apply_discount` function to compute a percentage discount accurately, ensuring that all dependent callers, such as `checkout`, receive correct computed values."
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "The `utils.py::add` function correctly implements integer addition for all valid inputs, leveraging Python's arbitrary-precision integers.",
+      "evidence": "utils.py::add::L20 -> return a + b"
+    },
+    {
+      "claim": "The `db.py::get_user` function correctly connects to the database and executes the query to retrieve user information as intended, handling empty input gracefully.",
+      "evidence": "db.py::get_user::L12 -> query = f\"SELECT * FROM users WHERE name = '{name}'\""
+    },
+    {
+      "claim": "The `app.py::user` function correctly retrieves user data by delegating to `get_user` and formatting the output as a JSON response.",
+      "evidence": "app.py::user::L52 -> return jsonify(get_user(name))"
+    },
+    {
+      "claim": "The `utils.py::hash_password` function correctly computes the MD5 hash of the input password, including for empty strings.",
+      "evidence": "utils.py::hash_password::L10 -> return hashlib.md5(password.encode()).hexdigest()"
+    },
+    {
+      "claim": "The `app.py::run_cmd` function correctly executes the provided command via subprocess, returning its standard output, and gracefully handles empty command strings.",
+      "evidence": "app.py::run_cmd::L23 -> output = subprocess.run(cmd, shell=True, capture_output=True)"
+    }
+  ],
+  "findings": [
+    {
+      "id": "L-004",
+      "dimension": "contract_conformance",
+      "probe_id": "P24",
+      "kind": "symptom",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "checkout"
+      },
+      "evidence": "app.py::checkout::L60 -> total = apply_discount(price, percent)",
+      "violation": "The `checkout` function calls `apply_discount` expecting a percentage-based discount, but `apply_discount` incorrectly subtracts the 'percent' value as an absolute amount (e.g., `apply_discount(100, 10)` results in 90, instead of 90 if 10% discount). This leads to an incorrect final `total` for financial transactions. While `total` is clamped to zero if negative, the fundamental calculation is flawed.",
+      "counterargument": "The function correctly clamps the `total` to zero if it becomes negative, mitigating some downstream risks from an incorrect discount.",
+      "rebuttal": "Clamping a value after an incorrect calculation does not fix the underlying logic error. The `total` remains wrong for any non-zero `percent` that does not lead to a negative value, violating the implied contract of providing a correctly discounted price.",
+      "correction": "Modify the `apply_discount` function to perform a true percentage discount (e.g., `return price * (1 - percent / 100)`), ensuring `checkout` receives a correct discounted total.",
+      "effort": "small"
+    },
+    {
+      "id": "L-005",
+      "dimension": "edge_cases",
+      "probe_id": "P01",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "average"
+      },
+      "evidence": "calculations.py::average::L10 -> return total / len(numbers)",
+      "violation": "For an empty list `numbers`, `len(numbers)` evaluates to zero, causing a `ZeroDivisionError` when attempting to calculate the average. The function crashes instead of handling this common edge case gracefully (e.g., returning 0 or raising a `ValueError`).",
+      "counterargument": "An empty list is an invalid input for calculating an average, and callers should ensure a non-empty list.",
+      "rebuttal": "Robust functions must anticipate and handle common invalid inputs. Crashing is an unacceptable failure mode for a common edge case like an empty collection.",
+      "correction": "Add a check at the beginning: `if not numbers: raise ValueError(\"Cannot calculate average of an empty list.\")` or `return 0` if 0 is a valid average for an empty set.",
+      "effort": "small"
+    },
+    {
+      "id": "L-007",
+      "dimension": "contract_conformance",
+      "probe_id": "P24",
+      "kind": "root_cause",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "apply_discount"
+      },
+      "evidence": "calculations.py::apply_discount::L15 -> return price - percent",
+      "violation": "The function `apply_discount` is named as such and takes a `percent` parameter, implying a percentage-based discount. However, it subtracts `percent` as an absolute value from the `price`. This constitutes an incorrect formula for a percentage discount, leading to silently wrong results (e.g., for `apply_discount(100, 10)`, it returns 90, but if 10% was intended, the correct calculation would be 90). This directly impacts financial calculations, as seen in `app.py::checkout`.",
+      "counterargument": "The code explicitly subtracts `percent`; perhaps `percent` is intended as an absolute amount, and the name is misleading.",
+      "rebuttal": "Given typical naming conventions and its usage in `app.py::checkout` where 'percent' is derived from a request argument likely representing a percentage, the current implementation constitutes a fundamental logic error in applying a discount.",
+      "correction": "To calculate a percentage discount, change the logic to `return price * (1 - percent / 100)`. If an absolute subtraction is truly intended, rename the function to clarify its behavior (e.g., `subtract_fixed_amount`).",
+      "effort": "small"
+    },
+    {
+      "id": "L-009",
+      "dimension": "edge_cases",
+      "probe_id": "P01",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "max_value"
+      },
+      "evidence": "calculations.py::max_value::L20 -> biggest = values[0]",
+      "violation": "When `values` is an empty list, attempting to access `values[0]` raises an `IndexError`, causing the function to crash instead of handling this common edge case (e.g., raising a `ValueError` or returning `None`).",
+      "counterargument": "Callers should ensure the input list is not empty for a function that finds the maximum value.",
+      "rebuttal": "An empty list is a standard edge case for collection processing. Crashing is not a graceful failure mode and leads to unexpected application termination.",
+      "correction": "Add a check at the beginning: `if not values: raise ValueError(\"Input list cannot be empty\")`.",
+      "effort": "small"
+    },
+    {
+      "id": "L-001",
+      "dimension": "exception_handling",
+      "probe_id": "P19",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "calc"
+      },
+      "evidence": "app.py::calc::L31 -> return str(eval(expr))",
+      "violation": "The `eval(expr)` call is not wrapped in a `try-except` block. For inputs like an empty string `\"\"` or syntactically invalid expressions, `eval()` will raise exceptions (e.g., `SyntaxError`, `NameError`) which are unhandled, causing the application to crash.",
+      "counterargument": "The prompt explicitly notes 'SECURITY: eval() on untrusted input' implying it's a security vulnerability, not a functional correctness defect.",
+      "rebuttal": "While `eval()` is a security risk, the unhandled exceptions for malformed *but non-malicious* inputs (e.g., an empty string) represent a functional correctness defect related to robustness and error handling, leading to a crash on expected bad input.",
+      "correction": "Wrap the `eval()` call in a `try-except` block to catch expected exceptions (e.g., `SyntaxError`, `NameError`) and return a structured error response, rather than crashing: `try: return str(eval(expr)) except (SyntaxError, NameError) as e: return jsonify({'error': str(e)}), 400`.",
+      "effort": "medium"
+    },
+    {
+      "id": "L-002",
+      "dimension": "exception_handling",
+      "probe_id": "P19",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "load_obj"
+      },
+      "evidence": "app.py::load_obj::L38 -> obj = pickle.loads(blob)",
+      "violation": "The `pickle.loads(blob)` call is not wrapped in a `try-except` block. For invalid or malformed `blob` inputs (e.g., an empty byte string `b\"\"`), `pickle.loads()` will raise an `_pickle.UnpicklingError` (or other pickle-related exceptions) which is unhandled, causing the application to crash.",
+      "counterargument": "The prompt notes 'SECURITY: insecure deserialization' implying this is a security issue, not a functional correctness defect.",
+      "rebuttal": "Beyond the security vulnerability, the lack of robust error handling for invalid but non-malicious inputs (e.g., corrupted data, empty input) represents a functional correctness defect, leading to a crash rather than a graceful error response.",
+      "correction": "Wrap the `pickle.loads()` call in a `try-except _pickle.UnpicklingError` block to catch expected deserialization errors and return a structured error response: `try: obj = pickle.loads(blob) except _pickle.UnpicklingError as e: return jsonify({'error': str(e)}), 400`.",
+      "effort": "medium"
+    },
+    {
+      "id": "L-003",
+      "dimension": "exception_handling",
+      "probe_id": "P19",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "load_config"
+      },
+      "evidence": "app.py::load_config::L46 -> return jsonify(yaml.load(raw))",
+      "violation": "The `yaml.load(raw)` call is not wrapped in a `try-except` block. For invalid or malformed YAML inputs, `yaml.load()` will raise a `YAMLError` which is unhandled, causing the application to crash instead of gracefully handling the invalid configuration data.",
+      "counterargument": "The prompt notes 'SECURITY: yaml.load without SafeLoader' implying this is a security issue, not a functional correctness defect.",
+      "rebuttal": "Beyond the security vulnerability of `yaml.load`, the absence of error handling for syntactically invalid YAML (e.g., a non-malicious but malformed configuration string) represents a functional correctness defect related to robustness, leading to a crash on expected bad input.",
+      "correction": "Wrap the `yaml.load()` call in a `try-except yaml.YAMLError` block to catch expected parsing errors and return a structured error response: `try: config = yaml.load(raw) except yaml.YAMLError as e: return jsonify({'error': str(e)}), 400`.",
+      "effort": "medium"
+    },
+    {
+      "id": "L-006",
+      "dimension": "contract_conformance",
+      "probe_id": "P24",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "average"
+      },
+      "evidence": "calculations.py::average::L5 -> def average(numbers: List[int]) -> int:",
+      "violation": "The function is annotated to return `int`, but performs floating-point division (`total / len(numbers)`). If the calculated average is not a whole number (e.g., `average([1, 2])` yields 1.5), Python implicitly truncates the float to `int` upon return, leading to a silently incorrect or truncated average (e.g., 1 instead of 1.5). This violates the implicit contract to return the true average, and also the explicit type annotation if a precise average is expected.",
+      "counterargument": "The `-> int` annotation might suggest that integer truncation is the desired behavior for the average.",
+      "rebuttal": "While the annotation is `int`, functional correctness for an 'average' function implies returning the most precise mathematical mean. Implicit truncation leads to loss of information and a numerically incorrect result without warning.",
+      "correction": "Either change the return type annotation to `float` and return `total / len(numbers)`, or if an integer average is strictly required, explicitly define and apply a rounding strategy (e.g., `return round(total / len(numbers))`).",
+      "effort": "small"
+    },
+    {
+      "id": "L-008",
+      "dimension": "edge_cases",
+      "probe_id": "P10",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "max_value"
+      },
+      "evidence": "calculations.py::max_value::L21 -> for i in range(0, len(values) - 1):",
+      "violation": "The loop `for i in range(0, len(values) - 1)` uses an off-by-one error. It iterates up to, but not including, `len(values) - 1`, meaning the last element of the list (`values[len(values) - 1]`) is never inspected. If the largest value is the last element, it will be silently missed (e.g., `max_value([1, 5, 20])` returns 5, not 20).",
+      "counterargument": "For many common lists, the maximum value is found within the first `N-1` elements, and the function appears to work.",
+      "rebuttal": "The contract of a `max_value` function is to find the maximum of *all* values. Missing the last element, especially if it is the maximum, constitutes a logic error with silent incorrectness for a subset of inputs.",
+      "correction": "Change the loop to `for i in range(len(values)):` and adjust the comparison, or more idiomatically, `for value in values[1:]:` after initializing `biggest = values[0]`.",
+      "effort": "small"
+    },
+    {
+      "id": "L-010",
+      "dimension": "edge_cases",
+      "probe_id": "P10",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "is_adult"
+      },
+      "evidence": "calculations.py::is_adult::L29 -> return age > 18",
+      "violation": "The condition `age > 18` incorrectly determines adulthood. Typically, individuals become adults *at* age 18, meaning the condition should be `age >= 18`. With the current logic, an 18-year-old is incorrectly classified as 'not an adult' (`is_adult(18)` returns `False`). This is an off-by-one error at a critical boundary.",
+      "counterargument": "The definition of 'adult' might be interpreted as strictly 'older than 18' in this specific context.",
+      "rebuttal": "Standard legal and social definitions of adulthood typically include age 18. This misclassification for 18-year-olds constitutes a logic error in applying a common business rule.",
+      "correction": "Change the comparison to `return age >= 18`.",
+      "effort": "small"
+    },
+    {
+      "id": "L-011",
+      "dimension": "state_mutation",
+      "probe_id": "P11",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "append_item"
+      },
+      "evidence": "calculations.py::append_item::L32 -> def append_item(item, bucket=[]):",
+      "violation": "The `bucket` parameter has a mutable default argument (`bucket=[]`). This means all subsequent calls to `append_item()` that do not explicitly pass a `bucket` will share and mutate the *same* list instance. This leads to unexpected state accumulation across calls (e.g., `append_item(1)` returns `[1]`, but `append_item(2)` returns `[1, 2]`, not `[2]`), causing subtle and hard-to-debug side effects.",
+      "counterargument": "The function returns the modified list, so callers are aware of the changes.",
+      "rebuttal": "Callers typically expect functions with mutable defaults to either receive a fresh instance or one they explicitly provide. Sharing a mutable default across calls violates the principle of isolated function execution and leads to unexpected global state, which is a major source of bugs.",
+      "correction": "Change the default argument to `None` and initialize the list inside the function: `def append_item(item, bucket=None): if bucket is None: bucket = [] bucket.append(item) return bucket`.",
+      "effort": "small"
+    },
+    {
+      "id": "L-012",
+      "dimension": "control_flow",
+      "probe_id": "P15",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "calculations.py",
+        "symbol": "grade"
+      },
+      "evidence": "calculations.py::grade::L44 -> elif score >= 70:",
+      "violation": "The conditional logic for assigning a grade does not cover scores below 70. If `score` is 69 or less (e.g., `grade(69)`, `grade(-5)`), the `if/elif` chain completes without a `return` statement, causing the function to implicitly return `None`. `None` is not a valid letter grade, which violates the implied contract of returning a string grade for all valid scores.",
+      "counterargument": "Perhaps scores below 70 are not meant to receive a letter grade, or an external system handles `None` values.",
+      "rebuttal": "A grading function typically implies a grade for all possible score ranges, usually 'F' for failing. Implicitly returning `None` is a silent failure that can lead to unexpected behavior downstream.",
+      "correction": "Add an `else` clause to cover scores below 70: `else: return \"F\"`.",
+      "effort": "small"
+    },
+    {
+      "id": "L-013",
+      "dimension": "exception_handling",
+      "probe_id": "P19",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "utils.py",
+        "symbol": "parse_config"
+      },
+      "evidence": "utils.py::parse_config::L14 -> data = json.loads(raw)",
+      "violation": "The `json.loads(raw)` call is not wrapped in a `try-except` block. For invalid or malformed JSON inputs (e.g., an empty string `\"\"`), `json.loads()` will raise a `json.JSONDecodeError` which is unhandled, causing the function and potentially the application to crash.",
+      "counterargument": "Callers are expected to provide valid JSON strings to a parsing function.",
+      "rebuttal": "Robust functions should anticipate and gracefully handle common input errors. Crashing on a malformed but non-malicious input (like an empty string) is not a graceful failure mode.",
+      "correction": "Wrap the `json.loads()` call in a `try-except json.JSONDecodeError` block to catch expected parsing errors and return a structured error response, or re-raise a more specific, higher-level exception: `try: data = json.loads(raw) except json.JSONDecodeError as e: raise ValueError(f\"Invalid JSON input: {e}\")`.",
+      "effort": "medium"
+    },
+    {
+      "id": "L-014",
+      "dimension": "contract_conformance",
+      "probe_id": "P24",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "utils.py",
+        "symbol": "main_check"
+      },
+      "evidence": "utils.py::main_check::L25 -> result = add(\"1\", 2)",
+      "violation": "The `main_check` function calls `add(\"1\", 2)`. The `add` function is type-annotated to accept two integers (`a: int, b: int`). Passing a string `\"1\"` as the first argument violates `add`'s contract, leading to a `TypeError` at runtime (`unsupported operand type(s) for +: 'str' and 'int'`) and causing the program to crash.",
+      "counterargument": "This code might be illustrative of a bug rather than intended to be fully functional, or part of a testing scenario.",
+      "rebuttal": "As executable code within the codebase, it represents a functional defect that causes a runtime crash due to incorrect argument types. If intended as an example of a bug, it should be in a test case or clearly commented as non-functional.",
+      "correction": "Call `add` with correct integer types: `result = add(1, 2)`.",
+      "effort": "small"
+    },
+    {
+      "id": "L-015",
+      "dimension": "edge_cases",
+      "probe_id": "P12",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "low",
+      "confidence": "medium",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "utils.py",
+        "symbol": "main_check"
+      },
+      "evidence": "utils.py::main_check::L27 -> if result == None:",
+      "violation": "The comparison `if result == None` (L27) is not idiomatic Python. While it often works, the correct and robust way to check for `None` is `if result is None`. Using `==` can lead to subtle bugs if `__eq__` is overridden on `None` (though rare) or if `result` is a custom object whose `__eq__` could produce an unexpected boolean value. It's also less performant.",
+      "counterargument": "This comparison works correctly in most standard Python contexts and for `None`.",
+      "rebuttal": "Adhering to `is None` is a best practice for clarity, semantic correctness, and robustness against potential `__eq__` overrides. Even if not currently causing a bug, it's an imprecise pattern.",
+      "correction": "Change the comparison to `if result is None:`.",
+      "effort": "small"
+    }
+  ],
+  "remediation_plan": [
+    {
+      "step": 1,
+      "action": "Implement robust exception handling for `eval` calls in `app.py::calc` to catch `SyntaxError`, `NameError`, and similar issues, returning structured error responses.",
+      "resolves": [
+        "L-001"
+      ],
+      "rationale": "Prevents application crashes from malformed, non-malicious user input in mathematical expressions, improving robustness."
+    },
+    {
+      "step": 2,
+      "action": "Implement robust exception handling for `pickle.loads` calls in `app.py::load_obj` to catch `_pickle.UnpicklingError`, returning structured error responses.",
+      "resolves": [
+        "L-002"
+      ],
+      "rationale": "Prevents application crashes from malformed or empty deserialization blobs, improving robustness for object loading."
+    },
+    {
+      "step": 3,
+      "action": "Implement robust exception handling for `yaml.load` calls in `app.py::load_config` to catch `yaml.YAMLError`, returning structured error responses.",
+      "resolves": [
+        "L-003"
+      ],
+      "rationale": "Prevents application crashes from malformed YAML configuration inputs, improving robustness for configuration loading."
+    },
+    {
+      "step": 4,
+      "action": "Correct the `calculations.py::apply_discount` function to calculate a true percentage discount (e.g., `price * (1 - percent / 100)`).",
+      "resolves": [
+        "L-007",
+        "L-004"
+      ],
+      "rationale": "Addresses the root cause of incorrect financial calculations, ensuring that discounted totals in `checkout` and other dependent functions are arithmetically accurate."
+    },
+    {
+      "step": 5,
+      "action": "Add input validation to `calculations.py::average` to check for empty lists and raise a `ValueError` or return a defined default (e.g., 0).",
+      "resolves": [
+        "L-005"
+      ],
+      "rationale": "Prevents `ZeroDivisionError` and application crashes when attempting to average an empty list, improving function robustness."
+    },
+    {
+      "step": 6,
+      "action": "Adjust `calculations.py::average`'s return type to `float` or explicitly apply a rounding strategy if an integer average is strictly required.",
+      "resolves": [
+        "L-006"
+      ],
+      "rationale": "Ensures the function returns the mathematically precise average or a correctly rounded integer, resolving silent precision loss and type contract violation."
+    },
+    {
+      "step": 7,
+      "action": "Add input validation to `calculations.py::max_value` to check for empty lists and raise a `ValueError`.",
+      "resolves": [
+        "L-009"
+      ],
+      "rationale": "Prevents `IndexError` and application crashes when attempting to find the maximum value in an empty list, improving function robustness."
+    },
+    {
+      "step": 8,
+      "action": "Correct the loop range in `calculations.py::max_value` to `for i in range(len(values))` to ensure all elements, including the last, are inspected.",
+      "resolves": [
+        "L-008"
+      ],
+      "rationale": "Fixes the off-by-one error, ensuring the function correctly identifies the true maximum value in all cases, especially when the maximum is the last element."
+    },
+    {
+      "step": 9,
+      "action": "Correct the adulthood condition in `calculations.py::is_adult` from `age > 18` to `age >= 18`.",
+      "resolves": [
+        "L-010"
+      ],
+      "rationale": "Aligns the logic with the standard definition of adulthood, ensuring 18-year-olds are correctly classified as adults."
+    },
+    {
+      "step": 10,
+      "action": "Refactor `calculations.py::append_item` to use `None` as a default for the `bucket` argument and initialize `bucket = []` inside the function if `None`.",
+      "resolves": [
+        "L-011"
+      ],
+      "rationale": "Eliminates the mutable default argument bug, preventing unexpected state sharing and accumulation across function calls."
+    },
+    {
+      "step": 11,
+      "action": "Add an `else` clause to `calculations.py::grade` to handle scores below 70, returning an 'F' or an appropriate non-grade indicator.",
+      "resolves": [
+        "L-012"
+      ],
+      "rationale": "Ensures all valid score inputs result in an explicit grade, preventing implicit `None` returns and ensuring control flow totality."
+    },
+    {
+      "step": 12,
+      "action": "Refactor `utils.py::main_check` to call `utils.py::add` with integer arguments (`add(1, 2)`) to match its type contract.",
+      "resolves": [
+        "L-014"
+      ],
+      "rationale": "Resolves the `TypeError` and runtime crash caused by passing a string to an integer-only addition function."
+    },
+    {
+      "step": 13,
+      "action": "Change the comparison `result == None` to `result is None` in `utils.py::main_check` for idiomatic and robust `None` checks.",
+      "resolves": [
+        "L-015"
+      ],
+      "rationale": "Adheres to Python best practices for `None` comparisons, improving code clarity and robustness against edge cases like `__eq__` overrides."
+    }
+  ],
+  "non_findings": [],
+  "handoffs": [
+    {
+      "observation": "The `run_cmd` function executes commands using `shell=True` and user-provided input, making it vulnerable to command injection.",
+      "belongs_to_phase": "4b",
+      "reason": "This is a security vulnerability where untrusted input can execute arbitrary commands on the system."
+    },
+    {
+      "observation": "The `calc` function uses `eval()` on untrusted user input, which is a severe security risk allowing arbitrary code execution.",
+      "belongs_to_phase": "4b",
+      "reason": "This is a critical security vulnerability that can lead to remote code execution (RCE)."
+    },
+    {
+      "observation": "The `load_obj` function uses `pickle.loads()` on untrusted data, enabling insecure deserialization vulnerabilities.",
+      "belongs_to_phase": "4b",
+      "reason": "This is a critical security vulnerability that can lead to remote code execution (RCE) via malicious pickled objects."
+    },
+    {
+      "observation": "The `load_config` function uses `yaml.load()` without specifying `yaml.SafeLoader`, which can allow arbitrary code execution via malicious YAML documents.",
+      "belongs_to_phase": "4b",
+      "reason": "This is a critical security vulnerability that can lead to remote code execution (RCE)."
+    },
+    {
+      "observation": "The `checkout` function contains mixed responsibilities (validation, business logic, side effects like logging to disk, I/O) making it a 'god handler'.",
+      "belongs_to_phase": "2",
+      "reason": "This relates to placement, cohesion, and layering concerns, indicating poor separation of concerns."
+    },
+    {
+      "observation": "The `checkout` function uses `os.system()` to log an event, which can be a security risk if the log message content or path is influenced by user input.",
+      "belongs_to_phase": "4b",
+      "reason": "This is a security vulnerability related to external command execution."
+    },
+    {
+      "observation": "The `if __name__ == \"__main__\":` block in `app.py` runs the Flask app in debug mode (`debug=True`) and binds to all network interfaces (`host=\"0.0.0.0\"`), which is insecure for production environments.",
+      "belongs_to_phase": "4b",
+      "reason": "This exposes sensitive debugging information and potential attack surface to the public network, critical for production security."
+    },
+    {
+      "observation": "The `get_user` function constructs an SQL query using f-string interpolation directly with user-provided `name`, making it vulnerable to SQL injection.",
+      "belongs_to_phase": "4b",
+      "reason": "This is a critical security vulnerability that can lead to unauthorized data access or manipulation."
+    },
+    {
+      "observation": "The `db.py` module contains hardcoded sensitive credentials (`DB_PASSWORD`, `API_KEY`).",
+      "belongs_to_phase": "4a",
+      "reason": "Hardcoding credentials is a security anti-pattern, risking exposure and unauthorized access to resources. Not tied to a specific function's logic."
+    },
+    {
+      "observation": "The `hash_password` function uses MD5, which is a cryptographically weak hashing algorithm and unsuitable for password storage.",
+      "belongs_to_phase": "4a",
+      "reason": "This is a security weakness related to cryptographic best practices, making hashed passwords vulnerable to collision and brute-force attacks."
+    },
+    {
+      "observation": "The `utils.py` module imports `os` but does not use it (L2).",
+      "belongs_to_phase": "1",
+      "reason": "This is a dead code or unused import finding, typically addressed in a style or static analysis phase."
+    },
+    {
+      "observation": "The `utils.py` module imports `sys` but does not use it (L3).",
+      "belongs_to_phase": "1",
+      "reason": "This is a dead code or unused import finding, typically addressed in a style or static analysis phase."
+    },
+    {
+      "observation": "The `parse_config` function assigns `data` to `unused` (L15), but `unused` is never read.",
+      "belongs_to_phase": "1",
+      "reason": "This is a dead store (unused variable) finding, typically addressed in a style or static analysis phase."
+    }
+  ]
+}

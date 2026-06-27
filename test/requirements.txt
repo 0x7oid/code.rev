@@ -1,0 +1,3 @@
+# Runtime deps for THIS sample target app (not the reviewer).
+flask>=3.0.0
+PyYAML>=6.0

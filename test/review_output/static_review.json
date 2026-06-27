@@ -1,0 +1,227 @@
+[
+  {
+    "tool": "ruff",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": 2,
+    "column": 1,
+    "code": "UP035",
+    "severity": "",
+    "message": "`typing.List` is deprecated, use `list` instead"
+  },
+  {
+    "tool": "ruff",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": 5,
+    "column": 22,
+    "code": "UP006",
+    "severity": "",
+    "message": "Use `list` instead of `List` for type annotation"
+  },
+  {
+    "tool": "ruff",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": 32,
+    "column": 30,
+    "code": "B006",
+    "severity": "",
+    "message": "Do not use mutable data structures for argument defaults"
+  },
+  {
+    "tool": "ruff",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\utils.py",
+    "line": 2,
+    "column": 8,
+    "code": "F401",
+    "severity": "",
+    "message": "`os` imported but unused"
+  },
+  {
+    "tool": "ruff",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\utils.py",
+    "line": 3,
+    "column": 8,
+    "code": "F401",
+    "severity": "",
+    "message": "`sys` imported but unused"
+  },
+  {
+    "tool": "ruff",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\utils.py",
+    "line": 15,
+    "column": 5,
+    "code": "F841",
+    "severity": "",
+    "message": "Local variable `unused` is assigned to but never used"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": "10",
+    "column": null,
+    "code": "return-value",
+    "severity": "error",
+    "message": "Incompatible return value type (got \"float\", expected \"int\")"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": "18",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": "32",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\calculations.py",
+    "line": "38",
+    "column": null,
+    "code": "return",
+    "severity": "error",
+    "message": "Missing return statement"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\utils.py",
+    "line": "13",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\utils.py",
+    "line": "23",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\utils.py",
+    "line": "25",
+    "column": null,
+    "code": "arg-type",
+    "severity": "error",
+    "message": "Argument 1 to \"add\" has incompatible type \"str\"; expected \"int\""
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\db.py",
+    "line": "8",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "10",
+    "column": null,
+    "code": "import-untyped",
+    "severity": "error",
+    "message": "Library stubs not installed for \"yaml\""
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "10",
+    "column": null,
+    "code": "",
+    "severity": "note",
+    "message": "Hint: \"python3 -m pip install types-PyYAML\""
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "10",
+    "column": null,
+    "code": "",
+    "severity": "note",
+    "message": "(or run \"mypy --install-types\" to install all missing stub packages)"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "10",
+    "column": null,
+    "code": "",
+    "severity": "note",
+    "message": "See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "11",
+    "column": null,
+    "code": "import-not-found",
+    "severity": "error",
+    "message": "Cannot find implementation or library stub for module named \"flask\""
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "20",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "28",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "35",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "43",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "50",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  },
+  {
+    "tool": "mypy",
+    "file": "C:\\Users\\pc\\Desktop\\malicious\\app.py",
+    "line": "56",
+    "column": null,
+    "code": "no-untyped-def",
+    "severity": "error",
+    "message": "Function is missing a return type annotation"
+  }
+]

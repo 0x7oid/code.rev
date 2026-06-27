@@ -1,0 +1,402 @@
+{
+  "phase": "4b-contextual-security",
+  "language": "python",
+  "summary": {
+    "modules_reviewed": 4,
+    "sources_identified": 2,
+    "sinks_adjudicated": 11,
+    "trust_model_summary": "The application is a public-facing HTTP service. All Flask route handlers are reachable by unauthenticated, anonymous internet users. All values read from `request.args`, `request.data`, query strings, and request bodies are explicitly classified as untrusted and attacker-controlled. Hardcoded values in source and the local SQLite file on disk are considered trusted. Sensitive assets include the user table (PII), the host operating system, and secrets embedded in the codebase. The service is assumed to run in production on an internet-facing host without an intervening WAF or input-sanitisation proxy.",
+    "security_posture": "exposed",
+    "headline": "Multiple critical vulnerabilities allowing remote code execution, SQL injection, and sensitive information disclosure due to pervasive lack of input validation and use of unsafe deserialization and command execution APIs, all reachable by unauthenticated attackers."
+  },
+  "coverage": {
+    "modules": [
+      "app.py",
+      "calculations.py",
+      "db.py",
+      "utils.py"
+    ],
+    "matrix": [
+      {
+        "module": "app.py",
+        "verdicts": {
+          "taint_reach": "finding:S-001",
+          "boundary_enforcement": "acceptable",
+          "authorisation_integrity": "acceptable",
+          "information_disclosure": "finding:S-007",
+          "business_logic_abuse": "finding:S-006",
+          "composition_vulnerability": "finding:S-005"
+        }
+      },
+      {
+        "module": "calculations.py",
+        "verdicts": {
+          "taint_reach": "not_applicable",
+          "boundary_enforcement": "not_applicable",
+          "authorisation_integrity": "not_applicable",
+          "information_disclosure": "not_applicable",
+          "business_logic_abuse": "finding:S-006",
+          "composition_vulnerability": "finding:S-006"
+        }
+      },
+      {
+        "module": "db.py",
+        "verdicts": {
+          "taint_reach": "finding:S-005",
+          "boundary_enforcement": "acceptable",
+          "authorisation_integrity": "not_applicable",
+          "information_disclosure": "not_applicable",
+          "business_logic_abuse": "not_applicable",
+          "composition_vulnerability": "finding:S-005"
+        }
+      },
+      {
+        "module": "utils.py",
+        "verdicts": {
+          "taint_reach": "not_applicable",
+          "boundary_enforcement": "not_applicable",
+          "authorisation_integrity": "not_applicable",
+          "information_disclosure": "not_applicable",
+          "business_logic_abuse": "not_applicable",
+          "composition_vulnerability": "not_applicable"
+        }
+      }
+    ]
+  },
+  "systemic_findings": [
+    {
+      "id": "SYS-001",
+      "description": "The application exhibits a systemic failure to validate or sanitize untrusted user input at trust boundaries and consistently uses inherently unsafe APIs across various data processing operations. This pervasive issue leads to multiple critical vulnerabilities including remote code execution and SQL injection, as attacker-controlled data flows directly into dangerous Sinks.",
+      "manifested_as": [
+        "S-001",
+        "S-002",
+        "S-003",
+        "S-004",
+        "S-005"
+      ],
+      "resolution": "Implement a centralised input validation and sanitisation layer for all untrusted data entering the application. Replace unsafe APIs like `subprocess.run(shell=True)`, `eval`, `pickle.loads`, and `yaml.load` with safe alternatives (e.g., allowlist-based command execution, JSON parsing, `PyYAML.SafeLoader`). Employ parameterized queries for all database interactions. Educate developers on secure coding practices regarding untrusted input."
+    }
+  ],
+  "strengths": [
+    {
+      "claim": "The `calculations.py` module adheres to the architectural intent by containing pure business logic, avoiding IO operations, direct user input processing, or sensitive data access. This separation of concerns improves auditability and limits the blast radius for certain types of attacks.",
+      "evidence": "calculations.py::apply_discount::L14 -> def apply_discount(price: float, percent: float) -> float:"
+    }
+  ],
+  "findings": [
+    {
+      "id": "S-001",
+      "dimension": "taint_reach",
+      "kind": "root_cause",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "run_cmd"
+      },
+      "evidence": "app.py::run_cmd::L23 -> output = subprocess.run(cmd, shell=True, capture_output=True)",
+      "taint_path": [
+        "app.py::run_cmd::L21 -> cmd = request.args.get(\"cmd\", \"\")",
+        "app.py::run_cmd::L23 -> output = subprocess.run(cmd, shell=True, capture_output=True)"
+      ],
+      "4a_references": [
+        "4a-001",
+        "4a-002",
+        "4a-003"
+      ],
+      "sink_type": "command_sink",
+      "exploitability_condition": "An attacker who is unauthenticated can supply an arbitrary command string to the 'cmd' query parameter at '/run' which reaches a 'subprocess.run' call with 'shell=True' at 'app.py::run_cmd::L23', producing arbitrary command execution on the host.",
+      "violation": "The application directly passes untrusted, unauthenticated attacker-controlled input from the 'cmd' query parameter to `subprocess.run` with `shell=True`, creating a critical command injection vulnerability. This allows an attacker to execute arbitrary commands on the underlying operating system.",
+      "counterargument": "The endpoint requires the attacker to know the specific parameter name 'cmd', which is not inherently discoverable.",
+      "rebuttal": "The parameter name is easily discoverable through common web reconnaissance techniques or by inspecting the client-side code (if any). The absence of discovery is not a security control. Furthermore, even if obfuscated, the vulnerability remains, requiring only knowledge of the API to exploit.",
+      "reorganization": "Remove the 'shell=True' argument from `subprocess.run`. Replace direct concatenation with a fixed command and explicit arguments, or use a strict allowlist for command and arguments if external input is necessary.",
+      "effort": "medium"
+    },
+    {
+      "id": "S-002",
+      "dimension": "taint_reach",
+      "kind": "root_cause",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "calc"
+      },
+      "evidence": "app.py::calc::L31 -> return str(eval(expr))",
+      "taint_path": [
+        "app.py::calc::L29 -> expr = request.args.get(\"expr\", \"0\")",
+        "app.py::calc::L31 -> return str(eval(expr))"
+      ],
+      "4a_references": [
+        "4a-004",
+        "4a-005"
+      ],
+      "sink_type": "deserialise_sink",
+      "exploitability_condition": "An attacker who is unauthenticated can supply an arbitrary Python expression string to the 'expr' query parameter at '/calc' which reaches an 'eval' call at 'app.py::calc::L31', producing arbitrary code execution.",
+      "violation": "The application evaluates arbitrary untrusted, unauthenticated attacker-controlled input directly via `eval()`. This creates a critical code injection vulnerability, allowing an attacker to execute any Python code on the server, compromising the system completely.",
+      "counterargument": "The 'eval' function is intentionally used for its flexibility in evaluating mathematical expressions, and the application expects numerical inputs.",
+      "rebuttal": "While intended for mathematical expressions, the `eval` function allows execution of arbitrary Python code, not just mathematical operations. An attacker can bypass numerical constraints by supplying malicious code, such as `__import__('os').system('rm -rf /')`. A safer alternative using a dedicated expression parser or a strict mathematical library is required.",
+      "reorganization": "Replace `eval(expr)` with a safe arithmetic expression parser that does not expose arbitrary code execution capabilities, or a strict allowlist of mathematical functions and operands.",
+      "effort": "large"
+    },
+    {
+      "id": "S-003",
+      "dimension": "taint_reach",
+      "kind": "root_cause",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "load_obj"
+      },
+      "evidence": "app.py::load_obj::L38 -> obj = pickle.loads(blob)",
+      "taint_path": [
+        "app.py::load_obj::L36 -> blob = request.data",
+        "app.py::load_obj::L38 -> obj = pickle.loads(blob)"
+      ],
+      "4a_references": [],
+      "sink_type": "deserialise_sink",
+      "exploitability_condition": "An attacker who is unauthenticated can supply a malicious byte string to the request body at '/load' which reaches 'pickle.loads' at 'app.py::load_obj::L38', producing arbitrary code execution.",
+      "violation": "The application uses `pickle.loads` to deserialise untrusted, unauthenticated attacker-controlled data from the request body. This creates a critical insecure deserialization vulnerability, as `pickle` is known to execute arbitrary code during deserialization of malicious payloads.",
+      "counterargument": "The endpoint is intended for deserialising trusted internal objects for legitimate application functionality.",
+      "rebuttal": "The `TRUST_MODEL` explicitly classifies 'request.data' as untrusted. Deserialising untrusted data with `pickle.loads` is inherently unsafe and leads to remote code execution. If internal objects must be deserialised, they should originate from trusted sources or use a secure, constrained deserialization format.",
+      "reorganization": "Replace `pickle.loads` with a safe, language-agnostic data format like JSON or Protocol Buffers, or implement strong cryptographic signing for pickled objects to ensure integrity and authenticity if `pickle` must be used for trusted internal data.",
+      "effort": "large"
+    },
+    {
+      "id": "S-004",
+      "dimension": "taint_reach",
+      "kind": "root_cause",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "load_config"
+      },
+      "evidence": "app.py::load_config::L47 -> return jsonify(yaml.load(raw))",
+      "taint_path": [
+        "app.py::load_config::L44 -> raw = request.args.get(\"yaml\", \"\")",
+        "app.py::load_config::L47 -> return jsonify(yaml.load(raw))"
+      ],
+      "4a_references": [],
+      "sink_type": "deserialise_sink",
+      "exploitability_condition": "An attacker who is unauthenticated can supply malicious YAML data to the 'yaml' query parameter at '/config' which reaches 'yaml.load' at 'app.py::load_config::L47', producing arbitrary code execution.",
+      "violation": "The application uses `yaml.load` without specifying `SafeLoader` or a more secure alternative, deserialising untrusted, unauthenticated attacker-controlled data. This creates a critical insecure deserialization vulnerability, as malicious YAML can construct arbitrary Python objects and trigger code execution.",
+      "counterargument": "The endpoint is designed to load configuration data, which is expected to be well-formed YAML.",
+      "rebuttal": "The `TRUST_MODEL` classifies 'request.args' as untrusted. `yaml.load` (without `SafeLoader`) is explicitly vulnerable to remote code execution when parsing untrusted input. An attacker can craft a YAML payload to instantiate dangerous objects (e.g., `!!python/object/apply:os.system ['command']`), leading to system compromise.",
+      "reorganization": "Modify the `yaml.load` call to `yaml.safe_load` to restrict object construction to safe types, or use a different configuration format (e.g., JSON) if `yaml` functionality is not strictly required.",
+      "effort": "small"
+    },
+    {
+      "id": "S-005",
+      "dimension": "taint_reach",
+      "kind": "root_cause",
+      "root_cause_id": "SYS-001",
+      "severity": "critical",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "db.py",
+        "symbol": "get_user"
+      },
+      "evidence": "db.py::get_user::L12 -> query = f\"SELECT * FROM users WHERE name = '{name}'\"",
+      "taint_path": [
+        "app.py::user::L51 -> name = request.args.get(\"name\", \"\")",
+        "app.py::user::L52 -> return jsonify(get_user(name))",
+        "db.py::get_user::L8 -> def get_user(name: str):",
+        "db.py::get_user::L12 -> query = f\"SELECT * FROM users WHERE name = '{name}'\""
+      ],
+      "4a_references": [],
+      "sink_type": "query_sink",
+      "exploitability_condition": "An attacker who is unauthenticated can supply a malicious SQL injection payload to the 'name' query parameter at '/user' which reaches an f-string interpolated SQL query at 'db.py::get_user::L12', producing unauthorised data access or authentication bypass.",
+      "violation": "The application constructs an SQL query by directly interpolating untrusted, unauthenticated attacker-controlled input ('name' parameter) into an f-string. This leads to a critical SQL injection vulnerability, allowing an attacker to manipulate the query, bypass authentication, or extract sensitive database information.",
+      "counterargument": "The 'name' parameter is expected to contain a simple string for user lookup, and the database query is designed for that specific purpose.",
+      "rebuttal": "The expectation of 'simple string' input does not constitute a security control. An attacker can inject SQL metacharacters (e.g., `'; DROP TABLE users; --`) into the 'name' parameter, which will be directly executed by the database, bypassing application logic and potentially compromising the entire database. The architectural intent for 'db.py' to use 'parameterised queries only' is clearly violated here, making this a composition vulnerability due to the `app.py` handler passing unsanitized input to the `db.py` layer.",
+      "reorganization": "Refactor `db.py::get_user` to use parameterized queries (e.g., `cur.execute(\"SELECT * FROM users WHERE name = ?\", (name,))`) to prevent SQL injection. Ensure all database interactions use this safe pattern.",
+      "effort": "medium"
+    },
+    {
+      "id": "S-006",
+      "dimension": "business_logic_abuse",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "medium",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "checkout"
+      },
+      "evidence": "app.py::checkout::L60 -> total = apply_discount(price, percent)",
+      "taint_path": [
+        "app.py::checkout::L58 -> price = float(request.args.get(\"price\", \"0\"))",
+        "app.py::checkout::L59 -> percent = float(request.args.get(\"percent\", \"0\"))",
+        "app.py::checkout::L60 -> total = apply_discount(price, percent)",
+        "calculations.py::apply_discount::L14 -> def apply_discount(price: float, percent: float) -> float:",
+        "calculations.py::apply_discount::L15 -> return price - percent"
+      ],
+      "4a_references": [
+        "4a-006",
+        "4a-007"
+      ],
+      "sink_type": null,
+      "exploitability_condition": "An attacker who is unauthenticated can supply 'NaN' (Not-a-Number) values to the 'price' or 'percent' query parameters at '/checkout' which causes the 'total' calculation in 'calculations.py::apply_discount' to become 'NaN', bypassing the negative value check at 'app.py::checkout::L61' and potentially causing unexpected downstream behavior.",
+      "violation": "The application converts untrusted, unauthenticated attacker-controlled input ('price' and 'percent' parameters) directly to floats without validating for `NaN` (Not-a-Number) values. An attacker can supply 'NaN', which propagates through `calculations.py::apply_discount`, causing `total` to become `NaN`. This effectively bypasses the `total < 0` check, as `NaN` comparisons are always false, violating the semantic invariant that 'total' should be a valid numerical value and leading to unexpected application state (e.g., `null` in the JSON response). This is also a composition vulnerability as `app.py` does not validate the input and `calculations.py` does not handle `NaN` gracefully.",
+      "counterargument": "The `float()` type conversion should handle numerical inputs correctly, and the `total < 0` check protects against negative totals.",
+      "rebuttal": "While `float()` handles standard numeric inputs, it also parses `NaN` as a valid float, which behaves unexpectedly in comparisons. An attacker can use `NaN` to evade numerical checks, such as `total < 0`, and introduce an invalid numerical state (`NaN`). This violates the intended business logic and could lead to inconsistencies or further abuse if downstream systems expect valid numbers.",
+      "reorganization": "Implement explicit input validation for 'price' and 'percent' to reject `NaN` or `infinity` values before conversion to float, ensuring only valid numbers are processed by `apply_discount`. For example, use `math.isfinite`.",
+      "effort": "medium"
+    },
+    {
+      "id": "S-007",
+      "dimension": "information_disclosure",
+      "kind": "root_cause",
+      "root_cause_id": null,
+      "severity": "high",
+      "confidence": "high",
+      "evidence_basis": "quoted",
+      "location": {
+        "file": "app.py",
+        "symbol": "if __name__ == \"__main__\":"
+      },
+      "evidence": "app.py::if __name__ == \"__main__\":::L70 -> app.run(host=\"0.0.0.0\", debug=True)",
+      "taint_path": [],
+      "4a_references": [
+        "4a-009"
+      ],
+      "sink_type": null,
+      "exploitability_condition": "An attacker who is unauthenticated can trigger an application error via any exposed endpoint, which will result in sensitive server information like stack traces being disclosed in the HTTP response due to Flask's debug mode being enabled.",
+      "violation": "The application is configured to run in Flask's debug mode (`debug=True`) in a production-like environment (exposed via `host=\"0.0.0.0\"`). This constitutes a high-severity information disclosure vulnerability, as debug mode reveals stack traces, internal configuration, and source code excerpts when errors occur, which an attacker can leverage for further exploitation.",
+      "counterargument": "Debug mode is useful for development and testing, and the application is not expected to encounter errors in production.",
+      "rebuttal": "Regardless of expected error frequency, exposing debug mode in a public-facing application is a critical misconfiguration. An attacker can intentionally trigger errors (e.g., malformed requests, invalid parameters) to gain access to sensitive internal information that aids in crafting targeted attacks. Debug mode should only be enabled in secure development environments.",
+      "reorganization": "Ensure that `debug=True` is disabled in any production deployment. Use environment variables or a configuration system to conditionally enable debug mode only in non-production environments.",
+      "effort": "small"
+    }
+  ],
+  "remediation_plan": [
+    {
+      "step": 1,
+      "action": "Implement a centralized input validation and sanitisation layer for all incoming untrusted data. For the '/run' endpoint, remove 'shell=True' and use `shlex.quote` for any parameters passed to `subprocess.run` if absolutely necessary, or preferably, use a strict allowlist of predefined commands and arguments. For the '/calc' endpoint, replace `eval()` with a secure arithmetic expression parser.",
+      "resolves": [
+        "S-001",
+        "S-002"
+      ],
+      "rationale": "Directly passing untrusted input to shell commands or `eval()` allows for arbitrary code execution. Robust validation and secure API usage are fundamental to preventing command and code injection."
+    },
+    {
+      "step": 2,
+      "action": "Replace `pickle.loads` at `/load` and `yaml.load` at `/config` with secure deserialization methods. For `pickle.loads`, prefer safe data interchange formats like JSON. For `yaml.load`, explicitly use `yaml.safe_load` to restrict object construction to safe types.",
+      "resolves": [
+        "S-003",
+        "S-004"
+      ],
+      "rationale": "Insecure deserialization of untrusted data is a common vector for remote code execution. Using safer alternatives or restricting deserialization to trusted data sources mitigates this critical risk."
+    },
+    {
+      "step": 3,
+      "action": "Refactor the `db.py::get_user` function to use parameterized queries instead of f-string interpolation for SQL query construction. This involves changing `cursor.execute(query)` to `cursor.execute(\"SELECT * FROM users WHERE name = ?\", (name,))`.",
+      "resolves": [
+        "S-005"
+      ],
+      "rationale": "Direct string interpolation into SQL queries leads to SQL injection vulnerabilities. Parameterized queries ensure that input is treated as data, not executable code, preventing malicious manipulation of database statements."
+    },
+    {
+      "step": 4,
+      "action": "Implement input validation for the 'price' and 'percent' parameters at the '/checkout' endpoint to explicitly check for and reject `NaN` (Not-a-Number) or `infinity` values before casting to `float` and passing to business logic functions. For example, use `math.isfinite()`.",
+      "resolves": [
+        "S-006"
+      ],
+      "rationale": "Allowing `NaN` values to propagate into business logic can bypass numerical checks and lead to unexpected application states or exploitable semantic inconsistencies, violating business rules."
+    },
+    {
+      "step": 5,
+      "action": "Disable Flask's debug mode (`debug=True`) in any production deployment environment. This configuration should be managed via environment variables or a dedicated production configuration profile.",
+      "resolves": [
+        "S-007"
+      ],
+      "rationale": "Running a public-facing application in debug mode exposes sensitive server information (e.g., stack traces, internal paths) that can assist attackers in understanding the system's architecture and discovering further vulnerabilities."
+    }
+  ],
+  "non_findings": [
+    {
+      "area": "app.py::checkout::os.system",
+      "judgement": "acceptable",
+      "reason": "The `os.system` call at `app.py::checkout::L64` is a `command_sink`, but the command being executed (`echo checkout >> /tmp/checkout.log`) is entirely hardcoded and does not incorporate any attacker-controlled data from any Source. Therefore, while a dangerous pattern, it is not contextually exploitable under this phase's mandate of data-flow analysis."
+    }
+  ],
+  "non_findings_4a": [
+    {
+      "4a_id": "4a-008",
+      "sink_location": "app.py::if __name__ == \"__main__\":::L70 -> app.run(host=\"0.0.0.0\", debug=True)",
+      "reason": "The finding flags the use of `host=\"0.0.0.0\"` which relates to network binding configuration. While this exposes the service publicly, it is a structural deployment concern (Phase 2) rather than a contextual security vulnerability arising from data flow, business logic abuse, or an exploitable Sink for attacker-controlled data under Phase 4b's mandate.",
+      "blocking_evidence": "app.py::if __name__ == \"__main__\":::L70 -> app.run(host=\"0.0.0.0\", debug=True)"
+    },
+    {
+      "4a_id": "4a-010",
+      "sink_location": "utils.py::hash_password::L10 -> return hashlib.md5(password.encode()).hexdigest()",
+      "reason": "The finding flags the use of an insecure cryptographic hash algorithm (MD5). While a valid security concern from a cryptographic strength perspective, this is primarily a code quality pattern (Phase 4a) and not a data-flow Sink reachable by attacker-controlled data, nor does it represent a contextual exploitability issue under Phase 4b's mandate of demonstrating attack chains.",
+      "blocking_evidence": "utils.py::hash_password::L10 -> return hashlib.md5(password.encode()).hexdigest()"
+    },
+    {
+      "4a_id": "4a-011",
+      "sink_location": "utils.py::hash_password::L10 -> return hashlib.md5(password.encode()).hexdigest()",
+      "reason": "The finding flags the use of MD5 for password hashing. While this is a critical cryptographic weakness, it is a code quality pattern (Phase 4a) and not a data-flow Sink reachable by attacker-controlled data, nor does it represent a contextual exploitability issue under Phase 4b's mandate of demonstrating attack chains. The hash operation itself is applied to internal password data, not directly to untrusted input in an exploitable flow.",
+      "blocking_evidence": "utils.py::hash_password::L10 -> return hashlib.md5(password.encode()).hexdigest()"
+    }
+  ],
+  "handoffs": [
+    {
+      "observation": "The 'average' function in 'calculations.py' is annotated to return an integer but may return a float if the sum is not perfectly divisible. This is a type mismatch.",
+      "belongs_to_phase": "3",
+      "reason": "This is a type-hinting inconsistency and potential logic error (returning a float when int is expected), not a security vulnerability under Phase 4b's scope."
+    },
+    {
+      "observation": "The 'apply_discount' function in 'calculations.py' subtracts 'percent' as an absolute amount instead of calculating a percentage. This is a business logic error.",
+      "belongs_to_phase": "3",
+      "reason": "This is a logic error in the business rule implementation, not a security vulnerability directly exploitable by an external attacker for harmful outcomes beyond incorrect calculation itself. Contrast with S-006 where specific attacker-controlled inputs ('NaN') bypass safety checks."
+    },
+    {
+      "observation": "The 'max_value' function in 'calculations.py' has an off-by-one error in its loop, potentially not inspecting the last element of the list.",
+      "belongs_to_phase": "3",
+      "reason": "This is a general logic error, not a security vulnerability within the scope of Phase 4b."
+    },
+    {
+      "observation": "The 'grade' function in 'calculations.py' implicitly returns 'None' for scores below 70, which is a type-hinting and logic error.",
+      "belongs_to_phase": "3",
+      "reason": "This is a logic error and type-hinting inconsistency, not a security vulnerability within the scope of Phase 4b."
+    },
+    {
+      "observation": "The 'append_item' function in 'calculations.py' uses a mutable default argument 'bucket', which can lead to unexpected state across calls.",
+      "belongs_to_phase": "3",
+      "reason": "This is a common Python anti-pattern and logic error, not a security vulnerability directly exploitable by an external attacker under Phase 4b's scope."
+    },
+    {
+      "observation": "Hardcoded credentials 'DB_PASSWORD' and 'API_KEY' are present in 'db.py'.",
+      "belongs_to_phase": "4a",
+      "reason": "Hardcoded secrets are a static pattern finding (Phase 4a). While their presence contributes to overall risk, this phase focuses on contextual exploitability via data flow, which is not directly applicable to static secrets unless they are part of a disclosed artifact. The 'secrets come from environment/config' convention in 'ARCHITECTURE_INTENT' is violated."
+    },
+    {
+      "observation": "The 'main_check' function in 'utils.py' passes a string to a function expecting an integer ('add(\"1\", 2)').",
+      "belongs_to_phase": "3",
+      "reason": "This is a type mismatch and runtime error, falling under general code correctness (Phase 3), not a security concern for Phase 4b."
+    },
+    {
+      "observation": "The 'main_check' function in 'utils.py' uses '==' None instead of 'is None'.",
+      "belongs_to_phase": "1",
+      "reason": "This is a stylistic or best-practice issue, falling under code style or linting (Phase 1), not a security concern."
+    },
+    {
+      "observation": "The 'utils.py' module has unused imports ('os', 'sys') and an unused local variable ('unused' in 'parse_config').",
+      "belongs_to_phase": "1",
+      "reason": "These are code quality and linting issues (Phase 1), not security vulnerabilities relevant to Phase 4b."
+    }
+  ]
+}

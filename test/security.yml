@@ -1,0 +1,80 @@
+rules:
+  - id: python-eval-detected
+    languages: [python]
+    severity: ERROR
+    message: Use of eval() on untrusted input can lead to arbitrary code execution.
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code"
+    patterns:
+      - pattern: eval(...)
+
+  - id: subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: subprocess called with shell=True can enable command injection.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+    patterns:
+      - pattern: subprocess.run(..., shell=True, ...)
+
+  - id: os-system-call
+    languages: [python]
+    severity: WARNING
+    message: os.system() passes a string to the shell; prefer subprocess with a list and no shell.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+    patterns:
+      - pattern: os.system(...)
+
+  - id: insecure-pickle-load
+    languages: [python]
+    severity: ERROR
+    message: Deserializing untrusted data with pickle can lead to RCE.
+    metadata:
+      category: security
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+    patterns:
+      - pattern: pickle.loads(...)
+
+  - id: yaml-unsafe-load
+    languages: [python]
+    severity: ERROR
+    message: yaml.load() without SafeLoader can execute arbitrary objects; use yaml.safe_load().
+    metadata:
+      category: security
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+    patterns:
+      - pattern: yaml.load($X)
+
+  - id: weak-md5-hash
+    languages: [python]
+    severity: WARNING
+    message: MD5 is cryptographically broken; use a strong algorithm (e.g. SHA-256, bcrypt, argon2).
+    metadata:
+      category: security
+      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+    patterns:
+      - pattern: hashlib.md5(...)
+
+  - id: flask-debug-true
+    languages: [python]
+    severity: WARNING
+    message: Running Flask with debug=True exposes the Werkzeug debugger (RCE) in production.
+    metadata:
+      category: security
+      cwe: "CWE-489: Active Debug Code"
+    patterns:
+      - pattern: $APP.run(..., debug=True, ...)
+
+  - id: hardcoded-secret
+    languages: [python]
+    severity: WARNING
+    message: Possible hardcoded credential/secret. Load secrets from the environment instead.
+    metadata:
+      category: security
+      cwe: "CWE-798: Use of Hard-coded Credentials"
+    patterns:
+      - pattern-regex: (?i)(password|api_key|secret|token)\s*=\s*["'][^"']{6,}["']
