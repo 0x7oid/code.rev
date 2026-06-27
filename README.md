@@ -195,3 +195,7 @@ Reviews:
 * Project and package organization
 * Responsibility distribution
 * Architectural consistency
+
+# Challenges Faced
+ * Making the LLM return syntaxically-correct JSON objects (not solved yet).
+ * Crafting good prompts to be used in the phases that require LLM intervention (solved).
