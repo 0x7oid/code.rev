@@ -45,6 +45,7 @@ pip install -r requirements.txt
 Set the API key:
 
 ```bash
+
 # macOS / Linux
 export API_KEY="your_gemini_api_key"
 
@@ -71,6 +72,7 @@ Optional context files, read from the target codebase root if present:
 
 # Pipeline
 
+```text
 src/main.py        parse args (<path>, --model), validate, call run_review(path, model)
    │
    ▼
@@ -82,9 +84,10 @@ orchestrator.run_review(project_path, model)
    │                      architecture_intent, model)          → security_4b_review.json
    ├─ logic_analysis(path, model)                              → logic_review.json
    └─ structure_analysis(path, model)                          → structure_review.json
-
+```
 
 ---
+
 # Phase 1 — Static Analysis
 
 Runs **Ruff** (`ruff check`) and **Mypy** (`mypy`, default configuration).
@@ -192,4 +195,3 @@ Reviews:
 * Project and package organization
 * Responsibility distribution
 * Architectural consistency
----
