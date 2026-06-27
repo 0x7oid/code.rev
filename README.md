@@ -71,7 +71,6 @@ Optional context files, read from the target codebase root if present:
 
 # Pipeline
 
-```
 src/main.py        parse args (<path>, --model), validate, call run_review(path, model)
    │
    ▼
@@ -84,7 +83,7 @@ orchestrator.run_review(project_path, model)
    ├─ logic_analysis(path, model)                              → logic_review.json
    └─ structure_analysis(path, model)                          → structure_review.json
 
----
+
 
 # Phase 1 — Static Analysis
 
