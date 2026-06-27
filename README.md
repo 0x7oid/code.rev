@@ -199,3 +199,8 @@ Reviews:
 # Challenges Faced
  * Making the LLM return syntaxically-correct JSON objects (not solved yet).
  * Crafting good prompts to be used in the phases that require LLM intervention (solved).
+
+# Future Improvements
+  * Running the 4 stages of the pipeline asynchronously
+  * Solving the LLM-Json problem
+  * Adding more stages to the pipeline , such as : Performance-Evaluation stage , to reduce time complexity and to detect known software bad codes.
