@@ -1,23 +1,5 @@
-# ---------------------------------------------------------------------------
-# Runtime dependency: Google Gemini SDK
-# Imported in llm/llm_client.py as: from google import genai
-# ---------------------------------------------------------------------------
-google-genai>=1.0.0
-
-# ---------------------------------------------------------------------------
-# Code-analysis tools invoked as external CLIs via subprocess.
-#   ruff    -> analyzers/static_analyzer.py  (ruff check ... --output-format json)
-#   mypy    -> analyzers/static_analyzer.py  (mypy ...)
-#   semgrep -> security/security-a.py        (semgrep --config rules/ --json ...)
-# They must be importable on PATH; installing them here guarantees that inside
-# the project's virtual environment.
-# ---------------------------------------------------------------------------
+google-genai>=1.0.0 # by default im using the latest version of google-genai, but you can specify a version if needed
 ruff>=0.4.0
 mypy>=1.8.0
 semgrep>=1.50.0
-
-# ---------------------------------------------------------------------------
-# Optional: lets main.py auto-load API_KEY from a .env file.
-# The import is guarded (try/except) so it is not strictly required.
-# ---------------------------------------------------------------------------
 python-dotenv>=1.0.0
